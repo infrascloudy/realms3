@@ -28,5 +28,5 @@ Source: https://github.com/infrascloudy/realms3.git
 
  ## Version
  Current version of realms3
- - 0.0.3
+ - 0.0.4
  
