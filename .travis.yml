@@ -1,29 +1,27 @@
 language: python
+cache: pip
 python:
-	- "3.4"
-	- "3.5"
-	- "3.6"
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
 addons:
-	apt:
-		packages:
-			- libxml2-dev
-			- libxslt1-dev
-				- zlib1g-dev
-				- libffi-dev
-				- libyaml-dev
-				- libssl-dev
-
+  apt:
+    packages:
+    - libxml2-dev
+    - libxslt1-dev
+    - zlib1g-dev
+    - libffi-dev
+    - libyaml-dev
+    - libssl-dev
 install:
-	- pip install -U pipenv
-	- pipenv install --dev
-
+  - pip install -U pipenv
+  - pipenv install --dev
 script: pipenv run nosetests
-sudo: false
 deploy:
-	provider: pypi
-	user: "dragonmaster"
-	password:
-		secure: "Z5ISKqPgzztXtzJDuDLnHocpMrOO547dxgObHeZk83iViajw3j6da5sOG74CchTQsNI0CNlAr6OtxVwTNkRaiSM1glY1PaLxxl259mCA59fMfTnX7jz36MdHpBhZpLi09If4JlJOGpV2n0SqPZvwlCPSJIRrSqqhGJ8MPdf6VRi0ij0Y9rnDpBVdQ9Yi9e8oTP2f/xZKsbFX3TaCDgSCZMPJxGQt0TzJIfqRr1dHZUm6+N6xlv51BinEZIMCnl24gQEBLk1MOgBeqoX893IyEPRFHAp+T+kFfdldEAzmx6kAE7S4S15Kj/Wx/KRrbd50MztxOv1spAJ7hcgPWXjs/8iLtE9ed+AaDubeO7Hn4mUo2iWSX8f3Fhmzd15ZNd2lKVugfKdWl2FdCSrXYJIiVn2CRJRMDOTU3VF72dvlM+b53jhP+5Cd6BGIMRCNi+TjCAZEJyn4uuCOWE9CKeDf0lG61tKWsR6hUvbCDwSTyys+3dC2KMmOJy1aak4rVqtvyMcc+ICxcAEYJzfQMRYKT0PiWvkWNIosszyfFXydArpYtoQbLo22/E2h3Uee47D9VOozSejf99qDNuc1t6KJNfuLU/iaj91xweo70S94SmjdmMe+kRXErckPJY7u6JNuMsiltpyKlcRWEhq9kKh88dHMNIwSgsRc7hVRtXmRYls="
-	distributions: "bdist_wheel"
-	on:
-		tags: true
+  provider: pypi
+  user: dragonmaster
+  distributions: bdist_wheel
+  password:
+    secure: ZldofFtUjwqWnxiuX92CAF8T0kqjtw5hAsF08Gs/ESJ9qa1Igov01rMcQwWaVB6FAshm+ElxNnSOI1Z5d/oIwZn8Hnh6ggdAs99gMDYMDN0FX8iXVlZ9S6lshqvUPo0v1y0uDGknPLv9TulPeIkpBWzLhJbwlwVDeMgrLMGI//cts539u07MM3B7Xm5/6Zc5nQg8hUoe2/6ksUmpai4a7b5qyvGSE1W4WSvA6taWV7GHUYLqpQCS6SrJvgf35gCE1D/TZuimQsoN9evq/lwpG+2jK7Ozw8AjUmqRz6I+uvEPrBj4vwjy0vpYYZrzjuZUYz7vxIBahSh+JNro+tUwtVtLN9ZywqBm+m/VTuPcg4vdkSuBvArZfLGiUJIVfbLvrBvE4R7Dn4lvseAdRhHUAdK6hmmODGnw1azMew06u7HH7EwoR+/0ljTDAUhau15MSeJSIE17/SB/x+7h7/1jeUaaHRfO1+VhC700mLNIC1jzTSw/1iGUwi7UlsLu4e+zvbN+x6X5YpI8Ar8Si3Me1KIrNpmnvevfwlcaJLir8vTzHs1FGLEh5CzLJPBtc4Anbiv7RXWRQJ50Z+vi6/o4A+X4rKFV2y10nmVvwzMzDbDdyDxrD3HUT2etx/LrFsbIk8eg7Nwk6plsL9IzNiXyNVqlIoU2yxsMLAU4e4OGk1E=
