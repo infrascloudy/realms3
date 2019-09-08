@@ -26,4 +26,7 @@ Source: https://github.com/infrascloudy/realms3.git
 - Python 3.5
 - Python 3.6
 
+ ## Version
+ Current version of realms3
+ - 0.0.1
  
