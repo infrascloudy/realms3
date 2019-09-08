@@ -1,0 +1,21 @@
+language: python
+python:
+	- "3.4"
+	- "3.5"
+	- "3.6"
+addons:
+	apt:
+		packages:
+			- libxml2-dev
+			- libxslt1-dev
+				- zlib1g-dev
+				- libffi-dev
+				- libyaml-dev
+				- libssl-dev
+
+install:
+	- pip install -U pipenv
+	- pipenv install --dev
+
+script: pipenv run nosetests
+sudo: false
