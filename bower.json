@@ -1,6 +1,6 @@
 {
   "name": "realms",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "dependencies": {
     "components-bootstrap": "~3.3.6",
     "jquery": "~2.2.3",
