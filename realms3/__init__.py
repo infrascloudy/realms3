@@ -1,10 +1,21 @@
 import sys
+import functools
+import base64
 import time
 import json
 import six.moves.http_client as httplib
+from functools import update_wrapper
 
-from flask import Flask
-
+import click
+from flask import Flask, request, render_template, url_for, redirect, g
+from flask_cache import Cache
+from flask_login import LoginManager, current_user
+from flask_sqlalchemy import SQLAlchemy
+from flask_assets import Environment, Bundle
+from flask_wtf import CsrfProtect
+from werkzeug.routing import BaseConverter
+from werkzeug.exceptions import HTTPException
+from sqlalchemy.ext.declarative import declarative_base
 import logging
 
 logger = logging.getLogger(__name__)
@@ -80,13 +91,53 @@ class Application(Flask):
 
     def make_response(self, rv):
         if rv is None:
-            rv = '', httplib.NO_CONTENT
+            rv = "", httplib.NO_CONTENT
         elif not isinstance(rv, tuple):
-            rv = rv,
+            rv = (rv,)
 
         rv = list(rv)
 
         if isinstance(rv[0], (list, dict)):
-            rv[0] = self.response_class(json.dumps(rv[0]), mimetype='application/json')
+            rv[0] = self.response_class(json.dumps(rv[0]), mimetype="application/json")
 
         return super(Application, self).make_response(tuple(rv))
+
+
+class Assets(Environment):
+    default_filters = {'js': 'rjsmin', 'css': 'cleancss'}
+    default_output = {'js': 'assets/%(version)s.js', 'css': 'assets/%(version)s.css'}
+
+    def register(self, name, *args, **kwargs):
+        ext = args[0].split('.')[-1]
+        filters = kwargs.get('filters', self.default_filters[ext])
+        output = kwargs.get('output', self.default_output[ext])
+
+        return super(Assets, self).register(name, Bundle(*args, filters=filters, output=output))
+
+
+def with_appcontext(f):
+    @click.pass_context
+    def decorator(__ctx, *args, **kwargs):
+        with create_app().app_context():
+            return __ctx.invoke(f, *args, **kwargs)
+
+    return update_wrapper(decorator, f)
+
+
+class AppGroup(click.group):
+    def command(self, *args, **kwargs):
+        wrap_for_ctx = kwargs.pop('with_appcontext', True)
+
+        def decorator():
+            if wrap_for_ctx:
+                f = with_appcontext(f)
+            return click.Group.command(self, *args, **kwargs)(f)
+        return decorator
+
+    def group(self, *args, **kwargs):
+        kwargs.setdefault('cls', AppGroup)
+        return click.Group.group(self, *args, **kwargs)
+
+
+cli = AppGroup()
+cli_group = functools.partial(click.group, cls=AppGroup)
