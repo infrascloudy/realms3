@@ -130,29 +130,35 @@ def setup(ctx, **kw):
 
     green("Config saved to %s" % conf_path)
 
-    if not conf_path.startswith('/etc/realms3'):
-        yellow('Note: You can move file to /etc/realms3/realms3.json')
+    if not conf_path.startswith("/etc/realms3"):
+        yellow("Note: You can move file to /etc/realms3/realms3.json")
         click.echo()
 
     yellow('Type "realms3 start" to start server')
     yellow('Type "realms3 dev" to start server in development mode')
-    yellow('Full usage: realms3 --help')
+    yellow("Full usage: realms3 --help")
 
 
 @app.cli.command()
-@click.option('--cache-redis-host',
-              default=getattr(config, 'CACHE_REDIS_HOST', "127.0.0.1"),
-              prompt='Redis host')
-@click.option('--cache-redis-port',
-              default=getattr(config, 'CACHE_REDIS_POST', 6379),
-              prompt='Redis port',
-              type=int)
-@click.option('--cache-redis-password',
-              default=getattr(config, 'CACHE_REDIS_PASSWORD', None),
-              prompt='Redis password')
-@click.option('--cache-redis-db',
-              default=getattr(config, 'CACHE_REDIS_DB', 0),
-              prompt='Redis db')
+@click.option(
+    "--cache-redis-host",
+    default=getattr(config, "CACHE_REDIS_HOST", "127.0.0.1"),
+    prompt="Redis host",
+)
+@click.option(
+    "--cache-redis-port",
+    default=getattr(config, "CACHE_REDIS_POST", 6379),
+    prompt="Redis port",
+    type=int,
+)
+@click.option(
+    "--cache-redis-password",
+    default=getattr(config, "CACHE_REDIS_PASSWORD", None),
+    prompt="Redis password",
+)
+@click.option(
+    "--cache-redis-db", default=getattr(config, "CACHE_REDIS_DB", 0), prompt="Redis db"
+)
 @click.pass_context
 def setup_redis(ctx, **kw):
     conf = config.read()
@@ -165,9 +171,11 @@ def setup_redis(ctx, **kw):
 
 
 @app.cli.command()
-@click.option('--elasticsearch-url',
-              default=getattr(config, 'ELASTICSEARCH_URL', 'http://127.0.0.1:9200'),
-              prompt='Elasticsearch URL')
+@click.option(
+    "--elasticsearch-url",
+    default=getattr(config, "ELASTICSEARCH_URL", "http://127.0.0.1:9200"),
+    prompt="Elasticsearch URL",
+)
 def setup_elasticsearch(**kw):
     conf = config.read()
 
@@ -175,6 +183,7 @@ def setup_elasticsearch(**kw):
         conf[k.upper()] = v
 
     config.update(conf)
+
 
 cli.add_command(setup_redis)
 cli.add_command(setup_elasticsearch)
